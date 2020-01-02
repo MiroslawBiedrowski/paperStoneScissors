@@ -18,7 +18,7 @@ function handSelection() {
   hands.forEach(hand => {
     hand.style.boxShadow = "";
   });
-  this.style.boxShadow = "0 0 0 4px yellow";
+  this.style.boxShadow = "0 0 0 4px green";
 }
 
 hands.forEach(hand => {
@@ -28,6 +28,7 @@ hands.forEach(hand => {
 function aiChoice() {
   return hands[Math.floor(Math.random() * hands.length)].dataset.option;
 }
+
 function checkResult(player, ai) {
   if (player === ai) {
     return "draw";
@@ -38,9 +39,30 @@ function checkResult(player, ai) {
   ) {
     return "win";
   } else {
-    return "loss";
+    return "lose";
   }
   console.log(game.playerHand, game.aiHand);
+}
+
+function publishResult(player, ai, result) {
+  document.querySelector('[data-summary="your-choice"]').textContent = player;
+  document.querySelector('[data-summary="ai-choice"]').textContent = ai;
+  document.querySelector(".numbers span").textContent = ++gameSummary.numbers;
+
+  if (result === "win") {
+    document.querySelector(".wins span").textContent = ++gameSummary.wins;
+    document.querySelector('[data-summary="who-win"]').textContent = "wygrałeś";
+    document.querySelector('[data-summary="who-win"]').style.color = "green";
+  } else if (result === "lose") {
+    document.querySelector(".losses span").textContent = ++gameSummary.losses;
+    document.querySelector('[data-summary="who-win"]').textContent =
+      "przegrałeś";
+    document.querySelector('[data-summary="who-win"]').style.color = "red";
+  } else {
+    document.querySelector(".draws span").textContent = ++gameSummary.draws;
+    document.querySelector('[data-summary="who-win"]').textContent = "remis";
+    document.querySelector('[data-summary="who-win"]').style.color = "gray";
+  }
 }
 
 function startGame() {
@@ -49,7 +71,7 @@ function startGame() {
   }
   game.aiHand = aiChoice();
   const gameResult = checkResult(game.playerHand, game.aiHand);
-  console.log(gameResult);
+  publishResult(game.playerHand, game.aiHand, gameResult);
 }
 
 document.querySelector("button.start").addEventListener("click", startGame);
