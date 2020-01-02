@@ -28,13 +28,28 @@ hands.forEach(hand => {
 function aiChoice() {
   return hands[Math.floor(Math.random() * hands.length)].dataset.option;
 }
+function checkResult(player, ai) {
+  if (player === ai) {
+    return "draw";
+  } else if (
+    (player === "papier" && ai === "kamień") ||
+    (player === "kamień" && ai === "nożyczki") ||
+    (player === "nożyczki" && ai === "papier")
+  ) {
+    return "win";
+  } else {
+    return "loss";
+  }
+  console.log(game.playerHand, game.aiHand);
+}
 
 function startGame() {
   if (game.playerHand === "") {
     return alert("Wybierz dłoń");
   }
-
   game.aiHand = aiChoice();
+  const gameResult = checkResult(game.playerHand, game.aiHand);
+  console.log(gameResult);
 }
 
 document.querySelector("button.start").addEventListener("click", startGame);
