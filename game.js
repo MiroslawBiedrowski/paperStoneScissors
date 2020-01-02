@@ -25,4 +25,16 @@ hands.forEach(hand => {
   hand.addEventListener("click", handSelection);
 });
 
-const btnStart = document.querySelector("button.start");
+function aiChoice() {
+  return hands[Math.floor(Math.random() * hands.length)].dataset.option;
+}
+
+function startGame() {
+  if (game.playerHand === "") {
+    return alert("Wybierz dłoń");
+  }
+
+  game.aiHand = aiChoice();
+}
+
+document.querySelector("button.start").addEventListener("click", startGame);
